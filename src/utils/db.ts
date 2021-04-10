@@ -25,3 +25,30 @@ export const getAllUsers = async () => {
   const users = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   return users;
 }
+
+export const getSingleQuiz = async (quizId) => {
+  const snapshot = await firebase
+    .firestore()
+    .collection('quiz')
+    .doc(String(quizId))
+    .get();
+  const quizData = snapshot.exists ? JSON.stringify(snapshot.data()) : null;
+  return quizData;
+};
+
+export const addAnswer = async (data) => {
+  const response = await firebase.firestore().collection('answer').add(data);
+  return response;
+};
+
+export const getAnswer = async (answerId) => {
+  const answerSnapshot = await firebase
+    .firestore()
+    .collection('answer')
+    .doc(String(answerId))
+    .get();
+  let answerData = answerSnapshot.exists
+    ? JSON.stringify(answerSnapshot.data())
+    : null;
+  return answerData;
+};
